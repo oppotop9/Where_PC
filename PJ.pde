@@ -98,7 +98,7 @@ void mousePressed(){
     println(Xpos);
     println(Ypos);
 }
-
+////////////////////////////////////////////
 void Map(){
   if(MapNumber==1){
   Map1();
@@ -106,12 +106,22 @@ void Map(){
   else if(MapNumber==2){
   Map2();
   }
+  else if(MapNumber==3){
+  Map3();
+  }
+  else if(MapNumber==4){
+  Map4(); 
+  }
+  else if(MapNumber==5){
+  Map5(); 
+  }
 }
-
-void Map1 (){
+///////////////////////////////
+void Map1(){
   fill(#24FF1A);
   Ym=35;
   for(int i=1;i<=7;i++){
+  noStroke();
   rect(665,Ym,70,70);
   Ym+=70;
   }
@@ -129,20 +139,27 @@ void Map1 (){
   }
   
 }
- 
-void Map2 (){
+///////////////////////////////
+void Map2(){
   
   fill(#24FF1A);
   Ym=35;
   for(int i=1;i<=7;i++){
+  noStroke();
   rect(35,Ym,70,70);
   Ym+=70;
   }
   fill(#F70CE0);
   rect(665,245,60,60);
-  
+  rect(595,35,60,60);
   if(Xpos==35){
   BlockMap();
+  }
+  else if(Xpos==595&&Ypos<=35&&N==1){
+  MapNumber=3;
+  Xpos=595;
+  Ypos=455;
+  ClearField();
   }
 else if(Xpos>=665&&Ypos==245&&E==1){
   MapNumber=1;
@@ -151,8 +168,103 @@ else if(Xpos>=665&&Ypos==245&&E==1){
   ClearField();
   }
 }
+///////////////////////////////
+void Map3(){
+  fill(#24FF1A);
+  noStroke();
+  Ym=455;
+  Xm=455;
+  for(int i=1;i<=4;i++){
+  rect(385,Ym,70,70);
+  Ym-=70;
+  }
+  for(int i=1;i<=4;i++){
+  rect(Xm,245,70,70);
+  Xm+=70;
+  }
+  fill(#F70CE0);
+  rect(595,455,60,60);
+  rect(455,385,60,60);
+  if(Xpos==385||Ypos==245){
+   BlockMap(); 
+  }
+  else if(Xpos<=455&&Ypos==385){
+  MapNumber=4;
+  Xpos=385;
+  Ypos=385;
+  ClearField();
+  }
+  else if(Xpos==595&&Ypos>=455&&S==1){
+  MapNumber=2;
+  Xpos=595;
+  Ypos=35;
+  ClearField();
+  }
+}
+///////////////////////////////
+void Map4(){
+  Map4Maze();
+  fill(#F70CE0);
+  rect(455,385,60,60);
+  rect(35,455,60,60);
   
+  if(Xpos==455&&Ypos==385){ //3
+  MapNumber=3;
+  Xpos=525;
+  Ypos=385;
+  ClearField();
+  }
+  else if(Xpos==35&&Ypos==455){ //5
+  MapNumber=5;
+  Xpos=105;
+  Ypos=455;
+  ClearField();
+  }
+}
+////////////////////////////////////////////
+void Map5(){
   
+  fill(#24FF1A);
+  noStroke();
+  Xm=175;
+  for(int i=1;i<=6;i++){
+  rect(Xm,455,70,70);
+  Xm+=70;
+  }
+  Xm=105;
+  for(int i=1;i<=8;i++){
+  rect(Xm,315,70,70);
+  Xm+=70;
+  }
+  rect(35,385,70,70);
+  rect(665,385,70,70);
+  fill(#F70CE0);
+  rect(35,455,60,60);
+  rect(665,455,60,60);
+  if(Xpos>=175&&Xpos<=525&&Ypos==455){
+  BlockMap();
+  }
+  if(Xpos>=105&&Xpos<=595&&Ypos==315){
+  BlockMap();
+  }
+  if((Xpos==35&&Ypos==385)||(Xpos==665&&Ypos==385)){
+  BlockMap(); 
+  }
+  
+  else if(Xpos==35&&Ypos==455){ //4
+  MapNumber=4;
+  Xpos=105;
+  Ypos=455;
+  ClearField();
+  }
+  else if(Xpos==665&&Ypos==455){ //4
+  MapNumber=4;
+  Xpos=665;
+  Ypos=455;
+  ClearField();
+  }
+}
+////////////////////////////////////////////
 void ClearField(){
   x=35;
   y=x;
@@ -168,6 +280,7 @@ void ClearField(){
     y+=70;
   }
 }
+
 void ClearDirection(){
 N=0; E=0; S=0; W=0;
 }
@@ -182,4 +295,74 @@ void LimitMap(){
   Xpos =LastX;
   Ypos =LastY;
   }
+}
+
+void Map4Maze(){
+  fill(#24FF1A);
+  noStroke();
+  Ym=315;
+  for(int i=1;i<=2;i++){
+  rect(525,Ym,70,70);
+  Ym-=70;
+  }
+  Xm=455;
+  for(int i=1;i<=3;i++){
+  rect(Xm,455,70,70);
+  Xm-=70;
+  }
+  Ym=455;
+  for(int i=1;i<=4;i++){
+  rect(175,Ym,70,70);
+  Ym-=70;
+  }
+  Xm=455;
+  for(int i=1;i<=3;i++){
+  rect(Xm,315,70,70);
+  Xm-=70;
+  }
+  Ym=105;
+  for(int i=1;i<=2;i++){
+  rect(525,Ym,70,70);
+  Ym-=70;
+  }
+  Xm=315;
+  for(int i=1;i<=3;i++){
+  rect(Xm,175,70,70);
+  Xm-=70;
+  }
+  Xm=665;
+  for(int i=1;i<=2;i++){
+  rect(Xm,105,70,70);
+  Xm-=70;
+  }
+  Xm=595;
+  for(int i=1;i<=2;i++){
+  rect(Xm,385,70,70);
+  Xm+=70;
+  }
+  if((Xpos==35&&Ypos==105)||(Xpos==35&&Ypos==385)){
+  BlockMap();
+  }
+  if((Xpos==105&&Ypos==245)||(Xpos==665&&Ypos==245)){
+  BlockMap();
+  }
+  if(Xpos==175&&Ypos>=175&&Ypos<=455){
+  BlockMap();
+  }
+  if((Ypos==175&&Xpos==245)||(Ypos==175&&Xpos==315)){
+  BlockMap();
+  }
+  if((Xpos==525&&Ypos==35)||(Xpos==525&&Ypos==105)||(Xpos==525&&Ypos>=245&&Ypos<=320)){
+  BlockMap();
+  }
+  if((Xpos>=315&&Xpos<=455&&Ypos==315)||(Xpos>=315&&Xpos<=455&&Ypos==455)){
+  BlockMap();
+  }
+  if((Xpos>=595&&Xpos<=665&&Ypos==105)||(Xpos>=595&&Xpos<=665&&Ypos==385)){
+  BlockMap();
+  }
+  rect(105,245,70,70);
+  rect(35,105,70,70);
+  rect(35,385,70,70);
+  rect(665,245,70,70);
 }
