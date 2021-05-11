@@ -6,13 +6,13 @@ float theta = 0;
 int x,y,Xm,Ym;
 int Xpos=385; int Ypos=455;
 int LastX,LastY;
-int start =0;
 int interact;
 int MapNumber;
 int N,S,E,W;
 int backdoor;
-PImage PlayerN,PlayerE,PlayerS,PlayerW,LastPlayer;
-PImage DoorN,DoorE,DoorS,DoorW;
+PImage PlayerN,PlayerE,PlayerS,PlayerW,LastPlayer,Sit;
+PImage DoorN,DoorE,DoorS,DoorW,Ledder;
+PImage Wall;
 
 
 void setup() {
@@ -50,11 +50,13 @@ void setup() {
      PlayerE=loadImage("CharacterE.png");
      PlayerS=loadImage("CharacterS.png");
      PlayerW=loadImage("CharacterW.png");
+     Sit=loadImage("CharacSit.png");
      DoorN=loadImage("DoorN.png");
      DoorE=loadImage("DoorE.png");
      DoorS=loadImage("DoorS.png");
      DoorW=loadImage("DoorW.png");
-     
+     Ledder=loadImage("ST.png");
+     Wall=loadImage("Wall.png");
      imageMode(CENTER);
      image(PlayerN,Xpos,Ypos);
      image(DoorE,35,245);
@@ -77,6 +79,9 @@ void draw() {
      }
      else if(W==1){
      image(PlayerW,Xpos,Ypos);
+     }
+     else if(N==-1){
+     image(Sit,Xpos,Ypos);
      }
      ClearDirection();
    }
@@ -120,6 +125,10 @@ void mousePressed(){
     //interact
     println("P U S H");
     interact = 1;
+    N=-1;
+  }
+  else{
+  N=-1; 
   }
   
     noStroke(); 
@@ -158,6 +167,7 @@ void Map1(){
   for(int i=1;i<=7;i++){
   noStroke();
   rect(665,Ym,70,70);
+  image(Wall,665,Ym);
   Ym+=70;
   }
   if(Xpos==665){
@@ -182,6 +192,7 @@ void Map2(){
   for(int i=1;i<=7;i++){
   noStroke();
   rect(35,Ym,70,70);
+  image(Wall,35,Ym);
   Ym+=70;
   }
 
@@ -195,6 +206,7 @@ void Map2(){
   Ypos=455;
   ClearField();
   image(DoorN,595,455);
+  image(Ledder,455,385);
   }
 else if(Xpos>=665&&Ypos==245&&E==1){ //1
   backdoor=11;
@@ -213,15 +225,15 @@ void Map3(){
   Xm=455;
   for(int i=1;i<=4;i++){
   rect(385,Ym,70,70);
+  image(Wall,385,Ym);
   Ym-=70;
   }
   for(int i=1;i<=4;i++){
   rect(Xm,245,70,70);
+  image(Wall,Xm,245);
   Xm+=70;
   }
-  fill(#F70CE0);
   
-  rect(455,385,60,60);
   if(Xpos==385||Ypos==245){
    BlockMap(); 
   }
@@ -230,6 +242,9 @@ void Map3(){
   Xpos=385;
   Ypos=385;
   ClearField();
+  fill(#030303);
+  rect(455,385,70,70,50);
+  image(Ledder,455,385);
   }
   else if(Xpos==595&&Ypos>=455&&S==1){ //2
   backdoor=31;
@@ -245,26 +260,33 @@ void Map3(){
 void Map4(){
   Map4Maze();
   fill(#F70CE0);
-  rect(455,385,60,60);
   rect(35,455,60,60);
-  
+  fill(#FFF300,127);
+  ellipse(665,455,4,20);
   if(Xpos==455&&Ypos==385){ //3
   MapNumber=3;
   Xpos=525;
   Ypos=385;
   ClearField();
   image(DoorN,595,455);
+  image(Ledder,455,385);
   }
   else if(Xpos==35&&Ypos==455){ //5
   MapNumber=5;
   Xpos=105;
   Ypos=455;
   ClearField();
+  noStroke();
+  fill(#FFF300,127);
+  ellipse(665,455,4,20);
+  fill(#030303,127);
+  rect(665,455,70,70,50);
+  
   }
 }
 ////////////////////////////////////////////
 void Map5(){
-  
+  Map5Dark();
   fill(#24FF1A);
   noStroke();
   Xm=175;
@@ -281,7 +303,6 @@ void Map5(){
   rect(665,385,70,70);
   fill(#F70CE0);
   rect(35,455,60,60);
-  rect(665,455,60,60);
   if(Xpos>=175&&Xpos<=525&&Ypos==455){
   BlockMap();
   }
@@ -297,15 +318,23 @@ void Map5(){
   Xpos=105;
   Ypos=455;
   ClearField();
+  fill(#030303);
+  rect(455,385,70,70,50);
+  image(Ledder,455,385);
   }
   else if(Xpos==665&&Ypos==455){ //4
   MapNumber=4;
   Xpos=665;
   Ypos=455;
   ClearField();
+  fill(#030303);
+  rect(455,385,70,70,50);
+  image(Ledder,455,385);
   }
 }
 ////////////////////////////////////////////
+
+
 void ClearField(){
   x=35;
   y=x;
@@ -363,41 +392,49 @@ void Map4Maze(){
   Ym=315;
   for(int i=1;i<=2;i++){
   rect(525,Ym,70,70);
+  image(Wall,525,Ym);
   Ym-=70;
   }
   Xm=455;
   for(int i=1;i<=3;i++){
   rect(Xm,455,70,70);
+  image(Wall,Xm,455);
   Xm-=70;
   }
   Ym=455;
   for(int i=1;i<=4;i++){
   rect(175,Ym,70,70);
+  image(Wall,175,Ym);
   Ym-=70;
   }
   Xm=455;
   for(int i=1;i<=3;i++){
   rect(Xm,315,70,70);
+  image(Wall,Xm,315);
   Xm-=70;
   }
   Ym=105;
   for(int i=1;i<=2;i++){
   rect(525,Ym,70,70);
+  image(Wall,525,Ym);
   Ym-=70;
   }
   Xm=315;
   for(int i=1;i<=3;i++){
   rect(Xm,175,70,70);
+  image(Wall,Xm,175);
   Xm-=70;
   }
   Xm=665;
   for(int i=1;i<=2;i++){
   rect(Xm,105,70,70);
+  image(Wall,Xm,105);
   Xm-=70;
   }
   Xm=595;
   for(int i=1;i<=2;i++){
   rect(Xm,385,70,70);
+  image(Wall,Xm,385);
   Xm+=70;
   }
   if((Xpos==35&&Ypos==105)||(Xpos==35&&Ypos==385)){
@@ -421,8 +458,32 @@ void Map4Maze(){
   if((Xpos>=595&&Xpos<=665&&Ypos==105)||(Xpos>=595&&Xpos<=665&&Ypos==385)){
   BlockMap();
   }
+  
   rect(105,245,70,70);
+  image(Wall,105,245);
   rect(35,105,70,70);
+  image(Wall,35,105);
   rect(35,385,70,70);
+  image(Wall,35,385);
   rect(665,245,70,70);
+  image(Wall,665,245);
+}
+
+void Map5Dark(){
+ x=35;
+  y=x;
+  noStroke();
+  fill(#1F1B1B,90); //rgb (31,38,46)
+  for(int g=1;g<=4;g++){
+    x=35;
+  for(int i=1;i<=10;i++){
+    rectMode(CENTER);
+    rect(x,y,70,70);
+    x+=70;
+    }
+    y+=70;
+  }
+  rectMode(CENTER);
+  rect(35,315,70,70);
+  rect(665,315,70,70);
 }
