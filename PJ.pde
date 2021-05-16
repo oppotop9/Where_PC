@@ -1,8 +1,3 @@
-float r1 = 20;
-float r2 = 60;
-float x_tran,y_tran,r;
-color c = color(int(random(0-255)),int(random(0-255)),int(random(0-255)));
-float theta = 0;
 int x,y,Xm,Ym;
 int Xpos=385; int Ypos=455;
 int LastX,LastY;
@@ -10,10 +5,13 @@ int interact;
 int MapNumber;
 int N,S,E,W;
 int backdoor;
+int Key,KeyLoop,MouseItem,HeadItem,KeyboardItem;
+int Xbox1,Ybox1,Xbox2,Ybox2;
 PImage PlayerN,PlayerE,PlayerS,PlayerW,LastPlayer,Sit;
-PImage DoorN,DoorE,DoorS,DoorW,Ledder;
-PImage Wall;
-
+PImage DoorN,DoorE,DoorS,DoorW,Ledder,Pipe,DoorLock;
+PImage Wall,MetalWall1,MetalWall2,MetalWall3;
+PImage Box;
+PImage Mouse,Headphone,Keyboard;
 
 void setup() {
   size(700, 900);
@@ -51,12 +49,30 @@ void setup() {
      PlayerS=loadImage("CharacterS.png");
      PlayerW=loadImage("CharacterW.png");
      Sit=loadImage("CharacSit.png");
+     
      DoorN=loadImage("DoorN.png");
      DoorE=loadImage("DoorE.png");
      DoorS=loadImage("DoorS.png");
      DoorW=loadImage("DoorW.png");
      Ledder=loadImage("ST.png");
+     Pipe=loadImage("Pipe.png");
+     DoorLock=loadImage("DoorLock.png");
+     
      Wall=loadImage("Wall.png");
+     MetalWall1=loadImage("Mwall1.png");
+     MetalWall2=loadImage("Mwall2.png");
+     MetalWall3=loadImage("Mwall3.png");
+     
+     Box=loadImage("WBox.png");
+     Xbox1=525; Ybox1=175; Xbox2=595; Ybox2=105;
+     
+     Mouse=loadImage("Col3.png");
+     Headphone=loadImage("Col5.png");
+     Keyboard=loadImage("Col2.png");
+     
+     MouseItem=0;
+     Key=1;
+     KeyLoop=0;
      imageMode(CENTER);
      image(PlayerN,Xpos,Ypos);
      image(DoorE,35,245);
@@ -84,11 +100,9 @@ void draw() {
      image(Sit,Xpos,Ypos);
      }
      ClearDirection();
+     
    }
    
-  
-  
-
 void mousePressed(){
   
   fill(0);
@@ -157,11 +171,16 @@ void Map(){
   else if(MapNumber==5){
   Map5(); 
   }
-  
+  else if(MapNumber==6){
+   Map6(); 
+  }
+  else if(MapNumber==7){
+   Map7(); 
+  }
 }
 ///////////////////////////////
 void Map1(){
-  
+  KeyLoop=0;
   fill(#24FF1A);
   Ym=35;
   for(int i=1;i<=7;i++){
@@ -173,7 +192,7 @@ void Map1(){
   if(Xpos==665){
     BlockMap();
   }
-  else if(Xpos<=35&&Ypos==245&&W==1){ //2
+   if(Xpos<=35&&Ypos==245&&W==1){ //2
   backdoor=12;
   MapNumber=2;
   Xpos=665;
@@ -181,6 +200,7 @@ void Map1(){
   ClearField();
   image(DoorW,665,245);
   image(DoorS,595,35);
+  
   }
   
 }
@@ -195,11 +215,34 @@ void Map2(){
   image(Wall,35,Ym);
   Ym+=70;
   }
-
+  
+  
+  if(Key==0){
+  image(DoorLock,245,35);
+  }
+  else if(Key==1){
+    if(KeyLoop==0){
+  image(DoorS,245,35);
+  KeyLoop=1;
+    }
+    else{
+    if(Xpos==245&&Ypos<=35&&N==1){ //6
+        backdoor=61;
+        MapNumber=6;
+        Xpos=245;
+        Ypos=455;
+        ClearField();
+        image(DoorN,245,455);
+        image(Headphone,665,105);
+        image(DoorS,105,35);
+      }
+    }
+    
+  }
   if(Xpos==35){
   BlockMap();
   }
-  else if(Xpos==595&&Ypos<=35&&N==1){ //3
+   if(Xpos==595&&Ypos<=35&&N==1){ //3
   backdoor=32;
   MapNumber=3;
   Xpos=595;
@@ -208,7 +251,7 @@ void Map2(){
   image(DoorN,595,455);
   image(Ledder,455,385);
   }
-else if(Xpos>=665&&Ypos==245&&E==1){ //1
+   if(Xpos>=665&&Ypos==245&&E==1){ //1
   backdoor=11;
   MapNumber=1;
   Xpos=35;
@@ -219,6 +262,7 @@ else if(Xpos>=665&&Ypos==245&&E==1){ //1
 }
 ///////////////////////////////
 void Map3(){
+  KeyLoop=0;
   fill(#24FF1A);
   noStroke();
   Ym=455;
@@ -237,7 +281,7 @@ void Map3(){
   if(Xpos==385||Ypos==245){
    BlockMap(); 
   }
-  else if(Xpos<=455&&Ypos==385){ //4
+   if(Xpos<=455&&Ypos==385){ //4
   MapNumber=4;
   Xpos=385;
   Ypos=385;
@@ -245,8 +289,11 @@ void Map3(){
   fill(#030303);
   rect(455,385,70,70,50);
   image(Ledder,455,385);
+  image(Mouse,665,315);
+  fill(#FFF300,200);
+  ellipse(665,455,13,6);
   }
-  else if(Xpos==595&&Ypos>=455&&S==1){ //2
+   if(Xpos==595&&Ypos>=455&&S==1){ //2
   backdoor=31;
   MapNumber=2;
   Xpos=595;
@@ -258,11 +305,10 @@ void Map3(){
 }
 ///////////////////////////////
 void Map4(){
+  KeyLoop=0;
   Map4Maze();
-  fill(#F70CE0);
-  rect(35,455,60,60);
-  fill(#FFF300,127);
-  ellipse(665,455,4,20);
+  image(Pipe,35,455);
+  
   if(Xpos==455&&Ypos==385){ //3
   MapNumber=3;
   Xpos=525;
@@ -278,31 +324,40 @@ void Map4(){
   ClearField();
   noStroke();
   fill(#FFF300,127);
-  ellipse(665,455,4,20);
+  ellipse(665,455,13,6);
   fill(#030303,127);
   rect(665,455,70,70,50);
   
+  
+  }
+  else if(interact == 1){
+  if(Xpos==595&&Ypos==315){
+    MouseItem=1;
+    fill(#1f262e);
+    rect(665,315,60,60);//Mouse get
+    Item();
+    
+  }
   }
 }
 ////////////////////////////////////////////
 void Map5(){
   Map5Dark();
-  fill(#24FF1A);
+  
   noStroke();
   Xm=175;
   for(int i=1;i<=6;i++){
-  rect(Xm,455,70,70);
+  image(MetalWall2,Xm,455);
   Xm+=70;
   }
   Xm=105;
   for(int i=1;i<=8;i++){
-  rect(Xm,315,70,70);
+  image(MetalWall1,Xm,315);
   Xm+=70;
   }
-  rect(35,385,70,70);
-  rect(665,385,70,70);
-  fill(#F70CE0);
-  rect(35,455,60,60);
+  image(MetalWall3,35,385);
+  image(MetalWall3,665,385);
+  image(Pipe,35,455);
   if(Xpos>=175&&Xpos<=525&&Ypos==455){
   BlockMap();
   }
@@ -321,20 +376,89 @@ void Map5(){
   fill(#030303);
   rect(455,385,70,70,50);
   image(Ledder,455,385);
+  image(Mouse,665,315);
+  fill(#FFF300,127);
+  ellipse(665,455,13,6);
   }
   else if(Xpos==665&&Ypos==455){ //4
   MapNumber=4;
   Xpos=665;
   Ypos=455;
   ClearField();
+  Key=1;  //Keyget
   fill(#030303);
   rect(455,385,70,70,50);
   image(Ledder,455,385);
+  Item();
+  
   }
 }
 ////////////////////////////////////////////
-
-
+void Map6(){
+  KeyLoop=0;
+  Map6box();
+  
+  if((Xpos==385&&Ypos<=455&&Ypos>=245)||(Ypos==245&&Xpos>=385&&Xpos<=655)){
+   BlockMap(); 
+  }
+  if((Xpos==385&&Ypos<=175&&Ypos>=105)||(Xpos==525&&Ypos>=35&&Ypos<=105)){
+   BlockMap(); 
+  }
+  if(Xpos==175&&Ypos==35){
+   BlockMap(); 
+  }
+  else if(interact == 1){
+  if(Xpos==595&&Ypos==105){
+    HeadItem=1;
+    fill(#1f262e);
+    rect(665,105,60,60);//Headphone get
+    Item();
+  }
+  }
+  else if(Xpos==245&&Ypos>=455&&S==1){ //2
+  backdoor=62;
+  MapNumber=2;
+  Xpos=245;
+  Ypos=35;
+  ClearField();
+  image(DoorW,665,245);
+  image(DoorS,595,35);
+  }
+  else if(Xpos==105&&Ypos<=35&&N==1){ //7
+  backdoor=71;
+  MapNumber=7;
+  Xpos=105;
+  Ypos=455;
+  ClearField();
+  image(DoorN,105,455);
+  image(Keyboard,35,35);
+  
+  }
+  
+}
+////////////////////////////////////////////
+void Map7(){
+  KeyLoop=0;
+  Map7color();
+  if(Xpos==105&&Ypos>=455&&S==1){ //6
+  backdoor=72;
+  MapNumber=6;
+  Xpos=105;
+  Ypos=35;
+  ClearField();
+  image(DoorN,245,455);
+  image(DoorS,105,35);
+  }
+  else if(interact == 1){
+  if(Xpos==105&&Ypos==35){
+    KeyboardItem=1;
+    fill(#1f262e);
+    rect(35,35,60,60);//Keyboard get
+    Item();
+  }
+  }
+}
+////////////////////////////////////////////
 void ClearField(){
   x=35;
   y=x;
@@ -352,7 +476,7 @@ void ClearField(){
 }
 
 void ClearDirection(){
-N=0; E=0; S=0; W=0;
+N=0; E=0; S=0; W=0; interact=0;
 }
   
 void BlockMap(){
@@ -384,6 +508,42 @@ void backdoor(){
     image(DoorN,595,455);
     backdoor=0;
     }
+    else if(backdoor==61){
+    image(DoorN,245,455);
+    backdoor=0;
+    }
+    else if(backdoor==62){
+    image(DoorS,245,35);
+    backdoor=0;
+    }
+    else if(backdoor==71){
+    image(DoorN,105,455);
+    backdoor=0;
+    }
+    else if(backdoor==72){
+    image(DoorS,105,35);
+    backdoor=0;
+    }
+}
+void Item(){
+  fill(#FFF25A);
+if(MouseItem==1){
+  
+  ellipse(665,525,40,40);
+  image(Mouse,665,525);
+  }
+if(HeadItem==1){
+    ellipse(595,525,40,40);
+   image(Headphone,595,525); 
+}
+if(KeyboardItem==1){
+ ellipse(665,595,40,40);
+ image(Keyboard,665,595);
+}
+if(Key==1){
+  fill(#FFF300);
+  ellipse(35,665,13,6);
+}
 }
 
 void Map4Maze(){
@@ -486,4 +646,108 @@ void Map5Dark(){
   rectMode(CENTER);
   rect(35,315,70,70);
   rect(665,315,70,70);
+}
+
+void Map6box(){
+  noStroke();
+  Ym=455;
+  Xm=455;
+  for(int i=1;i<=4;i++){
+  image(Wall,385,Ym);
+  Ym-=70;
+  }
+  for(int i=1;i<=4;i++){
+  image(Wall,Xm,245);
+  Xm+=70;
+  }
+  Ym=105;
+  for(int i=1;i<=2;i++){
+  
+  image(Wall,385,Ym);
+  Ym+=70;
+  }
+  Ym=35;
+  for(int i=1;i<=2;i++){
+  
+  image(Wall,525,Ym);
+  Ym+=70;
+  }
+  image(Wall,175,35);
+  image(Box,Xbox1,Ybox1);
+  image(Box,Xbox2,Ybox2);
+  if(interact==1){
+    if(Xpos==455&&Ypos==175){
+   Xbox1=595; 
+   stroke(#050505);
+   fill(#1f262e);
+    rect(525,175,70,70);
+    }
+    else if(Xpos==525&&Ypos==175){
+      Xbox1=665; 
+   stroke(#050505);
+   fill(#1f262e);
+    rect(595,175,70,70);
+    }
+    else if(Xpos==595&&Ypos==175){
+      Ybox2=35; 
+     stroke(#050505);
+     fill(#1f262e);
+    rect(595,105,70,70);
+    }
+    
+  }
+  
+}
+
+void Map7color(){
+ fill(#9F08FF);
+ rect(525,315,60,60);
+ rect(245,315,60,60);
+ rect(315,175,60,60);
+ rect(455,35,60,60);
+ rect(175,35,60,60);
+ ellipse(455,455,60,60);
+ fill(#13FF08);
+ rect(315,315,60,60);
+ rect(315,35,60,60);
+ rect(35,105,60,60);
+ rect(525,175,60,60);
+ rect(595,315,60,60);
+ ellipse(525,455,60,60);
+ fill(#FF6A0D);
+ rect(665,315,60,60);
+ rect(105,315,60,60);
+ rect(385,245,60,60);
+ rect(175,105,60,60);
+ ellipse(595,455,60,60);
+ fill(#5AFFFE);
+ rect(35,245,60,60);
+ rect(175,245,60,60);
+ rect(455,175,60,60);
+ rect(665,105,60,60);
+ ellipse(665,455,60,60);
+ if(Ypos==315&&Xpos<=665&&Xpos>=525){
+ Xpos=455;
+ Ypos=385;
+ }
+ if(Ypos==315&&Xpos<=315&&Xpos>=245){
+ Xpos=455;
+ Ypos=385;
+ }
+ if(Ypos==175&&Xpos<=525&&Xpos>=455){
+ Xpos=455;
+ Ypos=385;
+ }
+ if(Xpos==175&&Ypos<=105&&Ypos>=35){
+ Xpos=455;
+ Ypos=385;
+ }
+ if((Xpos==385&&Ypos==245)||(Xpos==105&&Ypos==315)||(Xpos==35&&Ypos==245)||(Xpos==175&&Ypos==245)||(Xpos==315&&Ypos==175)){
+ Xpos=455;
+ Ypos=385;
+ }
+ if((Xpos==665&&Ypos==105)||(Xpos==455&&Ypos==35)||(Xpos==315&&Ypos==35)||(Xpos==35&&Ypos==105)){
+ Xpos=455;
+ Ypos=385;
+ }
 }
