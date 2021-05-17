@@ -10,7 +10,7 @@ int Xbox1,Ybox1,Xbox2,Ybox2;
 PImage PlayerN,PlayerE,PlayerS,PlayerW,LastPlayer,Sit;
 PImage DoorN,DoorE,DoorS,DoorW,Ledder,Pipe,DoorLock,DoorLock2;
 PImage Wall,MetalWall1,MetalWall2,MetalWall3;
-PImage Box,NPC,Sign;
+PImage Box,NPC,Sign,BG,END;
 PImage Keyimage,Mouse,Headphone,Keyboard,CPU,Screen;
 int G=0,B=0,O=0,P=0;
 int Game=0;
@@ -19,6 +19,10 @@ void setup() {
   size(700, 900);
   background(255);
   ClearField();
+  
+  //BG=loadImage(".png");
+  //END=loadImage(".png");              *******************
+  //image(BG,695,350);
   
   fill(0); //chat box
   rect(350,590,700,180);
@@ -112,6 +116,7 @@ void draw() {
      ClearDirection();
   }
   else if(Game==5){
+    //image(END,350,450);                    ******************
   }
    }
    
@@ -693,6 +698,7 @@ void Map1Block(){
   }
   if(Xpos==385&&Ypos<=35)
   MapNumber=9;
+  ClearField();
   }
   if(Key==0){
     image(DoorLock,105,175);
@@ -1359,5 +1365,4 @@ void Text(){
 }
 void END(){
  Game=5;
- ClearField(); 
 }
