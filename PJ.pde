@@ -5,13 +5,13 @@ int interact;
 int MapNumber;
 int N,S,E,W;
 int backdoor;
-int Key,KeyLoop,MouseItem,HeadItem,KeyboardItem,CPUItem;
+int Key,KeyLoop,MouseItem,HeadItem,KeyboardItem,CPUItem,ScreenItem;
 int Xbox1,Ybox1,Xbox2,Ybox2;
 PImage PlayerN,PlayerE,PlayerS,PlayerW,LastPlayer,Sit;
 PImage DoorN,DoorE,DoorS,DoorW,Ledder,Pipe,DoorLock,DoorLock2;
 PImage Wall,MetalWall1,MetalWall2,MetalWall3;
-PImage Box;
-PImage Keyimage,Mouse,Headphone,Keyboard,CPU;
+PImage Box,NPC;
+PImage Keyimage,Mouse,Headphone,Keyboard,CPU,Screen;
 int G=0,B=0,O=0,P=0;
 int Game=0;
 
@@ -68,15 +68,16 @@ void setup() {
      
      Box=loadImage("WBox.png");
      Xbox1=525; Ybox1=175; Xbox2=595; Ybox2=105;
+     NPC=loadImage("NPC1.png");
      
      Keyimage=loadImage("KeyEX.png");
      Mouse=loadImage("Col3.png");
      Headphone=loadImage("Col5.png");
      Keyboard=loadImage("Col2.png");
      CPU=loadImage("Col4.png");
+     Screen=loadImage("Col1N.png");
      
-     MouseItem=0;
-     Key=1;
+     Key=0;
      KeyLoop=0;
      imageMode(CENTER);
      image(PlayerN,Xpos,Ypos);
@@ -84,6 +85,7 @@ void setup() {
 }
 
 void draw() {
+  if(Game<5){
      Map();
      LimitMap();
      LastX=Xpos;
@@ -105,7 +107,9 @@ void draw() {
      image(Sit,Xpos,Ypos);
      }
      ClearDirection();
-     
+  }
+  else if(Game==5){
+  }
    }
    
 void mousePressed(){
@@ -185,9 +189,13 @@ void Map(){
   else if(MapNumber==8){
    Map8(); 
   }
+  else if(MapNumber==9){
+   END(); 
+  }
 }
 ///////////////////////////////
 void Map1(){
+  Map1Block();
   KeyLoop=0;
   fill(#24FF1A);
   Ym=35;
@@ -518,7 +526,7 @@ void Map8(){
   }
   }
 }
-////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 void ClearField(){
   x=35;
   y=x;
@@ -597,12 +605,12 @@ void Item(){
   fill(#FFF25A);
 if(MouseItem==1){
   
-  ellipse(665,525,40,40);
-  image(Mouse,665,525);
+  ellipse(665,545,40,40);
+  image(Mouse,665,545);
   }
 if(HeadItem==1){
-    ellipse(595,525,40,40);
-   image(Headphone,595,525); 
+    ellipse(595,545,40,40);
+   image(Headphone,595,545); 
 }
 if(KeyboardItem==1){
  ellipse(665,595,40,40);
@@ -612,11 +620,72 @@ if(CPUItem==1){
  ellipse(595,595,45,45);
  image(CPU,595,597);
 }
+if(ScreenItem==1){
+  ellipse(630,635,50,50);
+  image(Screen,630,635);
+}
 if(Key==1){
   image(Keyimage,35,650);
   
 }
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
+void Map1Block(){
+  
+  image(Wall,35,35);
+  image(Wall,175,35);
+  image(Wall,175,105);
+  image(Wall,35,105);
+  if((MouseItem==1)&&(HeadItem==1)&&(KeyboardItem==1)&&(CPUItem==1)&&(ScreenItem==1)){
+  Game=4;
+  }
+  if(Game<3){
+  image(DoorLock,385,35);
+  }
+  if(Game==4){
+  if(KeyLoop==0){
+    stroke(#050505);
+   fill(#1f262e);
+    rect(385,35,70,70);
+  image(DoorS,385,35);
+  KeyLoop=1;
+  }
+  if(Xpos==385&&Ypos<=35)
+  MapNumber=9;
+  }
+  if(Key==0){
+    image(DoorLock,105,175);
+    image(NPC,385,35);
+    if((Ypos==105&&Xpos==105)||(Xpos==385&&Ypos==35)){
+    BlockMap();
+    }
+  }
+  if(Key==1){
+  image(NPC,525,35);
+  if(Xpos==525&&Ypos==35){
+    BlockMap();
+    }
+  }
+  if((Ypos==35&&Xpos>=35&&Xpos<=175)||(Ypos==105&&Xpos==35)||(Ypos==105&&Xpos==175)){
+    BlockMap();
+  }
+  if(ScreenItem==0){
+    image(Screen,105,35);
+    if(Xpos==105&&Ypos==35){
+     BlockMap(); 
+    }
+  }
+  if(interact == 1){
+  if(Xpos==105&&Ypos==105){
+    ScreenItem=1; //Screen get
+    fill(#1f262e);
+    rect(105,35,60,60);
+    Item();
+  }
+  }
+}
+
 void Map3Dark(){
   x=35;
   y=35;
@@ -991,4 +1060,9 @@ void Map8puzzle(){
     Game=2;
  }
  //println(P+" "+G+" "+O+" "+B+" ");
+}
+
+void END(){
+ Game=5;
+ ClearField(); 
 }
