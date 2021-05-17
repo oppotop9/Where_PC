@@ -1,7 +1,7 @@
 int x,y,Xm,Ym;
 int Xpos=385; int Ypos=455;
 int LastX,LastY;
-int interact;
+int interact,time;
 int MapNumber;
 int N,S,E,W;
 int backdoor;
@@ -10,7 +10,7 @@ int Xbox1,Ybox1,Xbox2,Ybox2;
 PImage PlayerN,PlayerE,PlayerS,PlayerW,LastPlayer,Sit;
 PImage DoorN,DoorE,DoorS,DoorW,Ledder,Pipe,DoorLock,DoorLock2;
 PImage Wall,MetalWall1,MetalWall2,MetalWall3;
-PImage Box,NPC;
+PImage Box,NPC,Sign;
 PImage Keyimage,Mouse,Headphone,Keyboard,CPU,Screen;
 int G=0,B=0,O=0,P=0;
 int Game=0;
@@ -69,6 +69,7 @@ void setup() {
      Box=loadImage("WBox.png");
      Xbox1=525; Ybox1=175; Xbox2=595; Ybox2=105;
      NPC=loadImage("NPC1.png");
+     Sign=loadImage("Sign.png");
      
      Keyimage=loadImage("KeyEX.png");
      Mouse=loadImage("Col3.png");
@@ -77,6 +78,7 @@ void setup() {
      CPU=loadImage("Col4.png");
      Screen=loadImage("Col1N.png");
      
+     time=0;
      Key=0;
      KeyLoop=0;
      imageMode(CENTER);
@@ -90,6 +92,7 @@ void draw() {
      LimitMap();
      LastX=Xpos;
      LastY=Ypos;
+     Text();
      imageMode(CENTER);
      if(N==1){
      image(PlayerN,Xpos,Ypos);
@@ -153,15 +156,12 @@ void mousePressed(){
   else{
   N=-1; 
   }
-  
     noStroke(); 
-    
     println(Xpos);
     println(Ypos);
     fill(#1f262e);
     rect(LastX,LastY,60,60);
     backdoor();
-    
 }
 ////////////////////////////////////////////
 void Map(){
@@ -204,6 +204,9 @@ void Map1(){
   rect(665,Ym,70,70);
   image(Wall,665,Ym);
   Ym+=70;
+  }
+  if(Xpos==525&&Ypos==245){
+     BlockMap(); 
   }
   if(Xpos==665){
     BlockMap();
@@ -265,6 +268,9 @@ void Map2(){
   }
   if(Xpos==35){
   BlockMap();
+  }
+  if((Xpos==525&&Ypos==35)||(Xpos==175&&Ypos==35)||(Xpos==385&&Ypos==175)||(Xpos==455&&Ypos==455)){
+    BlockMap();
   }
    if(Xpos==595&&Ypos<=35&&N==1){ //3
   backdoor=32;
@@ -333,6 +339,9 @@ void Map4(){
   KeyLoop=0;
   Map4Maze();
   image(Pipe,35,455);
+  if(Xpos==245&&Ypos==35){
+    BlockMap();
+  }
   if(MouseItem==0){
    image(Mouse,665,315);
    if(Xpos==665&&Ypos==315){
@@ -370,8 +379,12 @@ void Map4(){
     fill(#1f262e);
     rect(665,315,60,60);//Mouse get
     Item();
-    
-  }
+      fill(255);
+      textSize(30);
+      textAlign(CENTER);
+      text("You obtain *Mouse*", 350, 590);
+      time=1;
+    }
   }
 }
 ////////////////////////////////////////////
@@ -421,7 +434,11 @@ void Map5(){
   rect(455,385,70,70,50);
   image(Ledder,455,385);
   Item();
-  
+  fill(255);
+  textSize(30);
+  textAlign(CENTER);
+  text("You obtain *Key*", 350, 590);
+  time=1;
   }
 }
 ////////////////////////////////////////////
@@ -434,7 +451,9 @@ void Map6(){
      BlockMap();
    }
   }
-  
+  if((Xpos==175&&Ypos==245)||(Xpos==35&&Ypos==35)){
+    BlockMap();
+  }
   if((Xpos==385&&Ypos<=455&&Ypos>=245)||(Ypos==245&&Xpos>=385&&Xpos<=655)){
    BlockMap(); 
   }
@@ -450,6 +469,11 @@ void Map6(){
     fill(#1f262e);
     rect(665,105,60,60);//Headphone get
     Item();
+    fill(255);
+    textSize(30);
+    textAlign(CENTER);
+    text("U obtain *Headphone*", 350, 590);
+    time=1;
   }
   }
   else if(Xpos==245&&Ypos>=455&&S==1){ //2
@@ -476,6 +500,9 @@ void Map6(){
 void Map7(){
   KeyLoop=0;
   Map7color();
+  if(Xpos==35&&Ypos==315){
+    BlockMap();
+  }
   if(Xpos==105&&Ypos>=455&&S==1){ //6
   backdoor=72;
   MapNumber=6;
@@ -497,6 +524,11 @@ void Map7(){
     fill(#1f262e);
     rect(35,35,60,60);//Keyboard get
     Item();
+    fill(255);
+    textSize(30);
+    textAlign(CENTER);
+    text("You obtain *Keyboard*", 350, 590);
+    time=1;
   }
   }
 }
@@ -504,6 +536,9 @@ void Map7(){
 void Map8(){
   KeyLoop=0;
   Map8puzzle();
+  if(Xpos==315&&Ypos==35){
+    BlockMap();
+  }
   if(Xpos==385&&Ypos<=35&&N==1){ //2
   backdoor=82;
   MapNumber=2;
@@ -523,6 +558,11 @@ void Map8(){
     fill(#1f262e);
     rect(385,455,60,60);//CPU get
     Item();
+    fill(255);
+    textSize(30);
+    textAlign(CENTER);
+    text("You obtain *CPU*", 350, 590);
+    time=1;
   }
   }
 }
@@ -682,6 +722,11 @@ void Map1Block(){
     fill(#1f262e);
     rect(105,35,60,60);
     Item();
+    fill(255);
+    textSize(30);
+    textAlign(CENTER);
+    text("You obtain *Monitor*", 350, 590);
+    time=1;
   }
   }
 }
@@ -911,6 +956,15 @@ void Map7color(){
  rect(455,175,60,60);
  rect(665,105,60,60);
  ellipse(665,455,60,60);
+ 
+ fill(255,180);
+ textSize(20);
+ textAlign(CENTER);
+ text("I", 455, 462);
+ text("II", 525, 462);
+ text("III", 595, 462);
+ text("IV", 665, 462);
+ 
  if(Ypos==455&&Xpos>=455&&Xpos<=665){
   BlockMap(); 
  }
@@ -1061,7 +1115,248 @@ void Map8puzzle(){
  }
  //println(P+" "+G+" "+O+" "+B+" ");
 }
-
+void Text(){
+  noStroke();
+  fill(0);
+  rect(70,565,80,80);
+  rect(105,585,120,70);
+  if(MapNumber==1){
+  fill(#0AC8FF);
+  textSize(60);
+  textAlign(LEFT);
+  text("R1", 35, 575);
+  textSize(20);
+  text("Main Room", 35, 600);
+  image(Sign,525,245);
+  if(time==0){
+  if(interact==1){
+    if(Key==0){
+    if(Xpos==385&&Ypos<=105){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Guard]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("YOU CAN'T GO INSIDE !!", 350, 590);
+      time=1;
+    }
+    }
+    if(Key==1){
+    if(Xpos==525&&Ypos<=105){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Guard]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("GET ALL COMPUTER PART !!", 350, 590);
+      time=1;
+    }
+    }
+    if(Xpos==525&&Ypos==315){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Sign]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("Get all computer part", 350, 590);
+      text("for pass that door    ", 350, 625);
+      time=1;
+    }
+    }
+  }
+  }
+  if(MapNumber==2){
+  fill(#0AC8FF);
+  textSize(60);
+  textAlign(LEFT);
+  text("R2", 35, 575);
+  textSize(20);
+  text("Lobby Room", 35, 600);
+  image(Sign,385,175);
+  image(Sign,175,35);
+  image(Sign,525,35);
+  image(Sign,455,455);
+  if(time==0){
+  if(interact==1){
+    if(Xpos==385&&Ypos==245){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Sign]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("Fine a {key}      ", 350, 590);
+      text("for open doors ", 350, 625);
+      time=1;
+    }
+    if(Xpos==455&&Ypos==385){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Sign]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("Cpu Room", 350, 590);
+      time=1;
+    }
+    if(Xpos==525&&Ypos==105){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Sign]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("Mouse Room", 350, 590);
+      time=1;
+    }
+    if(Xpos==175&&Ypos==105){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Sign]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("Headphone Room", 350, 590);
+      time=1;
+    }
+  }
+  }
+  }
+  if(MapNumber==3){
+  fill(#0AC8FF);
+  textSize(60);
+  textAlign(LEFT);
+  text("R3", 35, 575);
+  textSize(20);
+  text("Ledder Room", 35, 600);
+  }
+  if(MapNumber==4){
+  fill(#0AC8FF);
+  textSize(60);
+  textAlign(LEFT);
+  text("R4", 35, 575);
+  textSize(20);
+  text("Mouse Room", 35, 600);
+  image(Sign,245,35);
+  if(time==0){
+  if(interact==1){
+    if(Xpos==245&&Ypos==105){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Sign]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("Vent can go upstair", 350, 590);
+      time=1;
+    }
+    }
+  }
+  }
+  if(MapNumber==5){
+  fill(#0AC8FF);
+  textSize(60);
+  textAlign(LEFT);
+  text("R5", 35, 575);
+  textSize(20);
+  text("Vent Room", 35, 600);
+  }
+  if(MapNumber==6){
+  fill(#0AC8FF);
+  textSize(60);
+  textAlign(LEFT);
+  text("R6", 35, 575);
+  textSize(15);
+  text("Headphone Room", 36, 600);
+  image(Sign,175,245);
+  image(Sign,35,35);
+  if(time==0){
+  if(interact==1){
+    if(Xpos==175&&Ypos==315){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Sign]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("Box can move with hand", 350, 590);
+      time=1;
+    }
+    if(Xpos==35&&Ypos==105){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Sign]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("Keyboard Room", 350, 590);
+      time=1;
+    }
+    }
+  }
+  }
+  if(MapNumber==7){
+  fill(#0AC8FF);
+  textSize(60);
+  textAlign(LEFT);
+  text("R7", 35, 575);
+  textSize(15);
+  text("Keyboard Room", 40, 600);
+  image(Sign,35,315);
+  if(time==0){
+  if(interact==1){
+    if(Xpos==35&&Ypos==385){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Sign]", 175, 545);
+      textSize(30);
+      textAlign(CENTER);
+      text("Beware *Shock* from", 350, 590);
+      text("color floor               ", 350, 625);
+      time=1;
+    }
+    }
+  }
+  }
+  if(MapNumber==8){
+  fill(#0AC8FF);
+  textSize(60);
+  textAlign(LEFT);
+  text("R8", 35, 575);
+  textSize(20);
+  text("Cpu Room", 35, 600);
+  image(Sign,315,35);
+  if(time==0){
+  if(interact==1){
+    if(Xpos==315&&Ypos==105){
+      fill(255);
+      textSize(20);
+      textAlign(LEFT);
+      text("[Sign]", 175, 545);
+      textSize(25);
+      textAlign(CENTER);
+      text("Click ball for unlock door", 350, 590);
+      textSize(20);
+      text("(Code same Keyboard room) ", 350, 625);
+      time=1;
+    }
+    }
+  }
+  }
+  if(time>0&&time<200){
+     time++;
+   }
+   if(time==200){
+     time=0;
+     noStroke();
+     fill(0);
+     rect(350,590,352,150);
+   }
+}
 void END(){
  Game=5;
  ClearField(); 
