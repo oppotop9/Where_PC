@@ -10,7 +10,7 @@ int Xbox1,Ybox1,Xbox2,Ybox2;
 PImage PlayerN,PlayerE,PlayerS,PlayerW,LastPlayer,Sit;
 PImage DoorN,DoorE,DoorS,DoorW,Ledder,Pipe,DoorLock,DoorLock2;
 PImage Wall,MetalWall1,MetalWall2,MetalWall3;
-PImage Box,NPC,Sign,BG,END;
+PImage Box,NPC,Sign,BG,END,ENDT,l1,l2,l3,l4;
 PImage Keyimage,Mouse,Headphone,Keyboard,CPU,Screen;
 int G=0,B=0,O=0,P=0;
 int Game=0;
@@ -20,9 +20,9 @@ void setup() {
   background(255);
   ClearField();
   
-  //BG=loadImage(".png");
-  //END=loadImage(".png");              *******************
-  //image(BG,695,350);
+  BG=loadImage("BGControl.png");
+  imageMode(CENTER);
+  image(BG,350,696);
   
   fill(0); //chat box
   rect(350,590,700,180);
@@ -74,6 +74,12 @@ void setup() {
      Xbox1=525; Ybox1=175; Xbox2=595; Ybox2=105;
      NPC=loadImage("NPC1.png");
      Sign=loadImage("Sign.png");
+     END=loadImage("ENDBG.png");   
+     ENDT=loadImage("ENDText.png");
+     l1=loadImage("ENDAnime1.png");
+     l2=loadImage("ENDAnime2.png");
+     l3=loadImage("ENDAnime3.png");
+     l4=loadImage("ENDAnime4.png");
      
      Keyimage=loadImage("KeyEX.png");
      Mouse=loadImage("Col3.png");
@@ -88,6 +94,7 @@ void setup() {
      imageMode(CENTER);
      image(PlayerN,Xpos,Ypos);
      image(DoorE,35,245);
+     
 }
 
 void draw() {
@@ -115,8 +122,31 @@ void draw() {
      }
      ClearDirection();
   }
-  else if(Game==5){
-    //image(END,350,450);                    ******************
+  if(Game==5){
+    if(time==0){
+    image(END,350,450);
+    }
+    time++;
+    
+    if(time>0&&time<=100){
+     image(l1,350,450);
+    }
+    if(time>100&&time<=200){
+     image(l2,350,450);
+    }
+    if(time>200&&time<=300){
+     image(l3,350,450);
+    }
+    if(time>300&&time<=400){
+     image(l4,350,450);
+    }
+    if(time>400&&time<600&&KeyLoop==0){
+     image(ENDT,350,450);
+     KeyLoop=1;
+    }
+    if(time==600){
+     time=1;
+   }
   }
    }
    
@@ -696,9 +726,10 @@ void Map1Block(){
   image(DoorS,385,35);
   KeyLoop=1;
   }
-  if(Xpos==385&&Ypos<=35)
+  if(Xpos==385&&Ypos<=35){
   MapNumber=9;
   ClearField();
+  }
   }
   if(Key==0){
     image(DoorLock,105,175);
@@ -1156,7 +1187,7 @@ void Text(){
       text("[Guard]", 175, 545);
       textSize(30);
       textAlign(CENTER);
-      text("GET ALL COMPUTER PART !!", 350, 590);
+      text("GET ALL PART AND GO!!", 350, 590);
       time=1;
     }
     }
@@ -1365,4 +1396,9 @@ void Text(){
 }
 void END(){
  Game=5;
+ KeyLoop=0;
+ noStroke();
+ fill(255);
+ rect(350,450,700,900);
+ time=0;
 }
